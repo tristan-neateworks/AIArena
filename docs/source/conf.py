@@ -13,7 +13,7 @@
 import os
 import sys
 #print(os.path.abspath('../../AIArena/AIArena/'))
-sys.path.insert(0, os.path.abspath('../../AIArena/AIArena/'))
+sys.path.insert(0, os.path.abspath('../../AIArena/'))
 
 
 # -- Project information -----------------------------------------------------
@@ -36,6 +36,8 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+#autodoc_mock_imports=["AIArena"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
