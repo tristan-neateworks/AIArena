@@ -1,36 +1,36 @@
-aiolympics package
-==================
+AIArena package
+===============
 
 Subpackages
 -----------
 
 .. toctree::
 
-   aiolympics.games
+   AIArena.games
 
 Submodules
 ----------
 
-aiolympics.AI module
+AIArena.AI module
+-----------------
+
+.. automodule:: AIArena.AI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+AIArena.Human module
 --------------------
 
-.. automodule:: aiolympics.AI
+.. automodule:: AIArena.Human
    :members:
    :undoc-members:
    :show-inheritance:
 
-aiolympics.Human module
------------------------
+AIArena.Ref module
+------------------
 
-.. automodule:: aiolympics.Human
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-aiolympics.Ref module
----------------------
-
-.. automodule:: aiolympics.Ref
+.. automodule:: AIArena.Ref
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ aiolympics.Ref module
 Module contents
 ---------------
 
-.. automodule:: aiolympics
+.. automodule:: AIArena
    :members:
    :undoc-members:
    :show-inheritance:

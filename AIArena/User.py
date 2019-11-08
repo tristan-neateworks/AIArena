@@ -4,7 +4,7 @@ import requests
 from google.cloud import firestore
 import google.oauth2.credentials
 
-from aiolympics.AI import AI as AI
+from AIArena.AI import AI as AI
 
 # Firestore client Documentation
 # https://googleapis.dev/python/firestore/latest/client.html

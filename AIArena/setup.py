@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="AI-Olympics",
+    name="AI-Arena",
     version="0.0.5",
     author="Tristan Neate",
     author_email="tristan@neateworks.com",
-    description="AI-Olympics beta",
+    description="AI-Arena beta",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://ai-olympics.com",

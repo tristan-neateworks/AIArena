@@ -1,4 +1,4 @@
-from aiolympics.AI import Player as Player
+from AIArena.AI import Player as Player
 
 class Human_Connect4(Player):
     def __init__(self):

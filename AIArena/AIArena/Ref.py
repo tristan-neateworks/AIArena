@@ -1,4 +1,4 @@
-import aiolympics.games as games
+import AIArena.games as games
 
 
 class Ref:
@@ -11,7 +11,7 @@ class Ref:
         
         :param game: Name of a game to set up (currently, only "Connect4" is implemented)
         :type game: string
-        :param players: List of :class:`aiolympics.AI.Player` objects to have play the game.
+        :param players: List of :class:`aiarena.AI.Player` objects to have play the game.
         :type players: list
         """
         self.pids = [x.name for x in players]

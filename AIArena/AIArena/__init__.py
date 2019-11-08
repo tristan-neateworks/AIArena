@@ -1,8 +1,8 @@
-import aiolympics.games
-from aiolympics.AI import AI as AI
-from aiolympics.Ref import Ref as Ref
-#from aiolympics.User import User as User
-from aiolympics.Human import Human_Connect4 as Human_Connect4
+import AIArena.games
+from AIArena.AI import AI as AI
+from AIArena.Ref import Ref as Ref
+#from AIArena.User import User as User
+from AIArena.Human import Human_Connect4 as Human_Connect4
 
 import pkgutil
 print([name for _, name, _ in pkgutil.iter_modules(['google.cloud.firestore'])])
@@ -13,7 +13,7 @@ from memex_client.client import BrainiacClient
 
 import json
 
-name = "AI Olympics"
+name = "AI Arena"
 
 def runGame(Ais,game):
     gameName = game["name"]
