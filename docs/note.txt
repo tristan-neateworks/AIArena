@@ -1,0 +1,8 @@
+This directory contains all documentation source files and tools necessary to generate and publish API docs to
+sites like readthedocs.org. 
+In order to use the scripts here, install the Sphinx package through pip. All other requirements should already 
+be taken care of with a vanilla python installation. Once this step is complete, all that should be necessary to rebuild the documentation is to run the following in this directory:
+
+$ make html
+
+The makefile (or make.bat) allow for a wide variety of other build options.
