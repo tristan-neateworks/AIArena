@@ -1,2 +1,2 @@
- AIArena
- memex_client
+AIArena
+memex_client

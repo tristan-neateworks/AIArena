@@ -1,4 +1,4 @@
-import aiolympics as aio
+import AIArena as aio
 import random
 
 class lilBuddy(aio.AI):
