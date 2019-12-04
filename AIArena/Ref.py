@@ -18,7 +18,8 @@ class Ref:
         self.players = players
         self.moves = []
         self.gameName=game
-
+        
+        print("Creating game: %s" % game)
         if game == "Connect4":
             self.game = games.Connect4(None, self.pids)
         elif game=="Arena":
@@ -35,17 +36,26 @@ class Ref:
         """
         
         # Arena unfortunately needs special treatment in terms of how it's run:
-        if gameName=="Arena":
+        if self.gameName=="Arena":
+            print("Running Arena")
+            #print(self.game.state)
             while "Winner" not in self.game.state:
+                #print("Turn: %d" % self.game.state["turn"])
                 for p in self.players:
                     # playerArr has the player-accessible player state:
                     if p.name in self.game.playerArr:
                         move=p.makeMove(self.game.playerArr[p.name])
                         self.moves.append(move)
                         if not self.move(move, p.name):
-                            return -1
+                            #print("player %s made invalid move" % p.name)
+                            #print("Move: ", move)
+                            pass
+                            #return -1
                     elif display:
-                        print("Skipping player "+p.name)
+                        #print("Skipping player "+p.name)
+                        pass
+                if display:
+                    self.game.print()
         else:
             while "Winner" not in self.game.state:
                 #print("turn", self.game.state["turn"])

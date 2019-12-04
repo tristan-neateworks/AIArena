@@ -47,6 +47,7 @@ def euDist(a, b):
 
 def checkMove(oldPos, newPos, maxDist=2):
     # The player 
+    #print(euDist(oldPos, newPos), oldPos, newPos)
     if newPos[0]<0 or newPos[1]<0 or newPos[0]>=BOARDHEIGHT or newPos[1]>=BOARDWIDTH:
         return False
     
@@ -82,6 +83,7 @@ def genArenaPlayer(name, pos, health, aoe, rng, inventory=[], lastmove=None, sco
     arPlayer["score"]=score
     arPlayer["inventory"]=inventory
     arPlayer["board"]=board
+    arPlayer["range"]=rng
     return arPlayer
 
 
@@ -93,6 +95,7 @@ class Arena:
         
         self.board=[[(None, None) for i in range(self.dims[1])] for j in range(self.dims[0])]
         self.players=players;
+        self.originalPlayers=players.copy()
         
         # randomly seed the board with items:
         for i in range(self.dims[0]):
@@ -102,17 +105,18 @@ class Arena:
         # randomly add players to the board:
         self.playerPos={}
         for p in players:
-            pos=(random.randint(0, self.dims[0]), random.randint(0, self.dims[1]))
+            pos=(random.randint(0, self.dims[0]-1), random.randint(0, self.dims[1]-1))
             while not place(self.board, p, pos):
-                pos=(random.randint(0, self.dims[0]), random.randint(0, self.dims[1]))
+                pos=(random.randint(0, self.dims[0]-1), random.randint(0, self.dims[1]-1))
             
             # pos should now be the player's position:
             self.playerPos[p]=pos
         
         # Let's do some dictionary comprehension, lads:
-        self.playerArr={p: genArenaPlayer(p, self.playerPos[p], 100, 2, 10) for p in players}
+        self.playerArr={p: genArenaPlayer(p, self.playerPos[p], 100, 2, 10, board=self.board) for p in players}
         self.lastMove=None
         
+        self.shortMoveList=[]
         
         if state:
             self.state = state
@@ -124,7 +128,11 @@ class Arena:
                 "playerpos": self.playerPos,
                 "players": self.playerArr
             }
-
+    
+    def colorFormat(self, plrName, text):
+        color=41+self.originalPlayers.index(plrName)
+        return "\033[1;%dm%s\033[0m" % (color, text)
+        
     def print(self):
         print("Round %d---------------" % self.state["turn"])
         for i, cols in enumerate(self.board):
@@ -140,14 +148,18 @@ class Arena:
                 if tile[0] is None:
                     rStr+=" "
                 else:
-                    rStr+="P"
+                    #plrColor=self.originalPlayers.index(tile[0])
+                    rStr+=self.colorFormat(tile[0], "P")#"P"
             print(rStr)
         print()
-        print("Most recent move: "+str(self.lastMove))
+        print("Moves this turn: ")#+str(self.lastMove))
+        for m in self.shortMoveList:
+            print(self.colorFormat(m[0], m[0]), m[1])
         print("--------------------")
         print()
 
     def validateMove(self, move, player):
+        #print("Attempting to validate move ", move, " from player ", player)
         try:
             pl=None
             if player in self.playerArr:
@@ -155,12 +167,14 @@ class Arena:
             
             # Determine if the player is dead:
             if pl is None:
+                #print("pl was none")
                 return False
             
             # Determine if the move is actually valid (these will throw an exception if the move
             # is improperly formatted)
             action=move["action"]
             params=move["params"]
+            maxDist=pl["range"]
             
             # Now validate the action type:
             if action in ACTIONS:
@@ -169,13 +183,16 @@ class Arena:
                 elif action=="move":
                     return checkMove(pl["position"], params)
                 elif action=="fire":
+                    #print("player is attempting to fire")
                     # once again, if this fails, then we automatically return false.
-                    return checkMove(pl["position"], params, maxDist=
+                    return checkMove(pl["position"], params, maxDist)
                 # Go ahead and specify whatever you want, player. "pickup" doesn't take an argument, and
                 # invalid commands won't even be executed.
                 else:
                     return True
-            
+            else:
+                pass
+                #print("action not valid")
             return False
             
         except:
@@ -185,6 +202,9 @@ class Arena:
         # Step 1: determine what the player actually wants:
         action=move["action"]
         params=move["params"]
+        
+        if player not in self.playerArr:
+            return
         
         if action=="move":
             newPos=params
@@ -213,18 +233,22 @@ class Arena:
         elif action=="pickup":
             # We don't actually do anything here (yet!)
             pass
-        lastMove=(player, move)
+        self.lastMove=(player, move)
+        if len(self.shortMoveList)>0:
+            if self.shortMoveList[-1][0]==list(self.playerArr.keys())[-1]:
+                self.shortMoveList=[]
+        self.shortMoveList.append(self.lastMove)
 
     # perform cleanup and determine if the game is over:
     def postMove(self):
         if len(self.playerArr)==1:
-            endGame(list(self.playerArr)[0])
+            self.endGame(list(self.playerArr)[0])
         elif len(self.playerArr)==0:
-            endGame(None)
+            self.endGame(None)
         else:
             # This just indicates that there has been another timestep.
             # The ref keeps track of move history so we don't have to (which is very convenient!)
-            self.state["turn"]==self.state["turn"]+1
+            self.state["turn"]=self.state["turn"]+1
 
     def endGame(self, winner):
         #print("Winner", winner)
